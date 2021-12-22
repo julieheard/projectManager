@@ -1,0 +1,13 @@
+/* To add this CSS file to a GUI, on the GUI FXML page, click on the top element (e.g. BorderPane) and then on the right, add it to the stylesheet box in the properties box */
+
+.button{
+-fx-background-color : #FED8B1;
+}
+
+.button:hover{
+-fx-background-color : #FFE87C;
+}
+
+.button:pressed{
+-fx-background-color : #FFDAB9;
+}

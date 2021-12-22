@@ -4,13 +4,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="832.0" stylesheets="@../../styleSheet.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.projectmanager.GUIs.mainMenuController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="832.0" stylesheets="@../../styleSheet.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.projectmanager.GUIs.mainMenuController">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="100.0" prefWidth="284.0">
                <children>
                   <Label alignment="TOP_LEFT" prefHeight="19.0" prefWidth="188.0" text="current user: " textFill="#8d8989" />
+                  <Label fx:id="employeeIDLabel" prefHeight="19.0" prefWidth="269.0" text="EmployeeName" textFill="#8d8989" />
                </children>
             </VBox>
             <Label prefHeight="27.0" prefWidth="166.0" text="Main Menu" textFill="#e1730c" underline="true">
