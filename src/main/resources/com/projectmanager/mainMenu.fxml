@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="832.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.projectmanager.GUIs.mainMenuController">
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="100.0" prefWidth="284.0">
+               <children>
+                  <Label alignment="TOP_LEFT" prefHeight="19.0" prefWidth="188.0" text="current user: " textFill="#8d8989" />
+                  <Label fx:id="employeeIDLabel" prefHeight="19.0" prefWidth="269.0" text="EmployeeName" textFill="#8d8989" />
+               </children>
+            </VBox>
+            <Label prefHeight="27.0" prefWidth="166.0" text="Main Menu" textFill="#e1730c" underline="true">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
+         </children>
+      </HBox>
+   </top>
+   <right>
+      <VBox prefHeight="341.0" prefWidth="270.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="User management:" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="Change my password" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="Personnel menu" />
+         </children></VBox>
+   </right>
+   <left>
+      <VBox prefHeight="341.0" prefWidth="285.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="19.0" prefWidth="79.0" text="Options:" />
+            <Separator opacity="0.0" prefHeight="30.0" prefWidth="285.0" />
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="See Curreent Projects" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="600.0" />
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="Submit a new timesheet" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="600.0" />
+            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="Edit a timesheet" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="320.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Project Management:" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="New project" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="Assign employee to project" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="View employees on a project" />
+            <Separator opacity="0.0" prefHeight="20.0" prefWidth="200.0" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="View employee project history" />
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <Button alignment="BOTTOM_LEFT" mnemonicParsing="false" text="Exit" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
