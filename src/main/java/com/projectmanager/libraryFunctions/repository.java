@@ -16,12 +16,12 @@ import java.util.HashMap;
 public class repository {
 
     private static final String DatabaseLocation = System.getProperty("user.dir") + "\\ProjectManagment.accdb";
-    private static Connection con;
+
     private static Employee currentUser;
 
     public static Connection getConnection() {
         try {
-            con = DriverManager.getConnection("jdbc:ucanaccess://" + DatabaseLocation, "", "");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://" + DatabaseLocation, "", "");
             return con;
         } catch (Exception e) {
             System.out.println("Error in the repository class: " + e);
@@ -37,9 +37,9 @@ public class repository {
     public static Department getCurrentUsersDepartment() {
         Department department = null;
         try {
-
+            Connection con = getConnection();
             String sql = "SELECT Department.Department_Number, Department.Department_Name,  Department.Department_Head FROM Department, Employee where Employee_ID = '" + currentUser.getEmployee_Id() + "' AND Department.Department_Number = Employee.Employee_Dept";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             if (rs.next()) {
                 department = new Department(rs.getInt("Department_Number"), rs.getString("Department_Name"), rs.getString("Department_Head"));
@@ -56,7 +56,8 @@ public class repository {
     public static boolean EmployeeLogIn(String userID, String password) {
         try {
             String sql = "SELECT * FROM Employee where Employee_ID = '" + userID + "'";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             if (rs.next()) {
                 currentUser = new Employee(rs.getString("Employee_Id"), rs.getString("Employee_Fname"), rs.getString("Employee_Lname"), rs.getString("Employee_Password"), rs.getString("Employee_Dept"), rs.getString("Employee_Office"), rs.getString("Employee_Phone"), rs.getDate("Employee_HireDate"), rs.getDouble("Employee_HourlyRate"));
@@ -80,7 +81,8 @@ public class repository {
             String sql = "SELECT Project.Project_ProjectID, Project.Project_Title, Project.Project_StartDate, Project.Project_EndDate, Project.Project_Budget\n"
                     + "FROM Project INNER JOIN ProjectAssignment ON Project.Project_ProjectID = ProjectAssignment.ProjectAssignment_ProjectID\n"
                     + "WHERE (((ProjectAssignment.ProjectAssignment_EmployeeID)='" + UserID + "'))";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
             while (rs.next()) {
                 Project nextProject = new Project(rs.getInt("Project_ProjectID"), rs.getString("Project_Title"), rs.getDate("Project_StartDate").toLocalDate(), rs.getDate("Project_EndDate").toLocalDate(), rs.getDouble("Project_Budget"));
                 ProjectList.add(nextProject);
@@ -97,11 +99,11 @@ public class repository {
     public static ArrayList<ProjectTimeLog> getAllUsersTimeLogs(String userID) {
         ArrayList<ProjectTimeLog> timeLogs = new ArrayList<>();
         try {
-
+            Connection con = getConnection();
             String sql = "SELECT ProjectTimeLog.*\n"
                     + "FROM ProjectAssignment INNER JOIN ProjectTimeLog ON ProjectAssignment.ProjectAssignment_Id = ProjectTimeLog.ProjectTimeLog_ProjectAssignmentId\n"
                     + "WHERE (((ProjectAssignment.ProjectAssignment_EmployeeID)='" + userID + "'));";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            ResultSet rs = executeSQL.executeQuery(con, sql);
             while (rs.next()) {
                 ProjectTimeLog ptl = new ProjectTimeLog(rs.getInt("ProjectTimeLog_Id"), rs.getDate("ProjectTimeLog_DateLogged"), rs.getString("ProjectTimeLog_DescriptionOfWork"), rs.getInt("ProjectTimeLog_HoursLogged"), rs.getInt("ProjectTimeLog_ProjectAssignmentId"));
                 timeLogs.add(ptl);
@@ -122,8 +124,8 @@ public class repository {
             String sql = "SELECT ProjectTimeLog.ProjectTimeLog_Id, ProjectTimeLog.ProjectTimeLog_DateLogged, ProjectTimeLog.ProjectTimeLog_DescriptionOfWork, ProjectTimeLog.ProjectTimeLog_HoursLogged, ProjectTimeLog.ProjectTimeLog_ProjectAssignmentId\n"
                     + "FROM ProjectAssignment INNER JOIN ProjectTimeLog ON ProjectAssignment.ProjectAssignment_Id = ProjectTimeLog.ProjectTimeLog_ProjectAssignmentId\n"
                     + "WHERE (((ProjectAssignment.ProjectAssignment_EmployeeID)='" + userID + "') AND ((ProjectTimeLog.ProjectTimeLog_DateLogged)>=" + getSQLDateString(fromDate) + " And (ProjectTimeLog.ProjectTimeLog_DateLogged)<=" + getSQLDateString(toDate) + "));";
-
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             while (rs.next()) {
                 ProjectTimeLog ptl = new ProjectTimeLog(rs.getInt("ProjectTimeLog_Id"), rs.getDate("ProjectTimeLog_DateLogged"), rs.getString("ProjectTimeLog_DescriptionOfWork"), rs.getInt("ProjectTimeLog_HoursLogged"), rs.getInt("ProjectTimeLog_ProjectAssignmentId"));
@@ -143,9 +145,9 @@ public class repository {
     public static ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> EmployeeList = new ArrayList<>();
         try {
-
+            Connection con = getConnection();
             String sql = "SELECT * FROM Employee";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            ResultSet rs = executeSQL.executeQuery(con, sql);
             while (rs.next()) {
                 Employee nextEmployee = new Employee(rs.getString("Employee_Id"), rs.getString("Employee_Fname"), rs.getString("Employee_Lname"), rs.getString("Employee_Password"), rs.getString("Employee_Dept"), rs.getString("Employee_Office"), rs.getString("Employee_Phone"), rs.getDate("Employee_HireDate"), rs.getDouble("Employee_HourlyRate"));
                 EmployeeList.add(nextEmployee);
@@ -162,8 +164,9 @@ public class repository {
     public static ArrayList<Project> getAllProjects() {
         ArrayList<Project> ProjectList = new ArrayList<>();
         try {
+            Connection con = getConnection();
             String sql = "SELECT * FROM Project";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            ResultSet rs = executeSQL.executeQuery(con, sql);
             while (rs.next()) {
                 Project nextProject = new Project(rs.getInt("Project_ProjectID"), rs.getString("Project_Title"), rs.getDate("Project_StartDate").toLocalDate(), rs.getDate("Project_EndDate").toLocalDate(), rs.getDouble("Project_Budget"));
                 ProjectList.add(nextProject);
@@ -183,7 +186,8 @@ public class repository {
         try {
 
             String sql = "SELECT Project_Title FROM Project where projectID = " + projectID;
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             if (rs.next()) {
                 projectName = rs.getString("Project_Title");
@@ -204,7 +208,8 @@ public class repository {
             String sql = "SELECT Project.Project_Title\n"
                     + "FROM (Project INNER JOIN ProjectAssignment ON Project.Project_ProjectID = ProjectAssignment.ProjectAssignment_ProjectID) INNER JOIN ProjectTimeLog ON ProjectAssignment.ProjectAssignment_Id = ProjectTimeLog.ProjectTimeLog_ProjectAssignmentId\n"
                     + "WHERE (((ProjectTimeLog.ProjectTimeLog_Id)=" + TimeLogID + "))";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             if (rs.next()) {
                 projectName = rs.getString("Project_Title");
@@ -222,10 +227,11 @@ public class repository {
     public static double getEmployeePay(String employeeID) {
         double hourlyPay = 0.0;
         try {
+            Connection con = getConnection();
             String sql = "SELECT Employee.Employee_HourlyRate\n"
                     + "FROM Employee\n"
                     + "WHERE Employee.Employee_Id= '" + employeeID + "';";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             if (rs.next()) {
                 hourlyPay = rs.getInt("Employee_HourlyRate");
@@ -245,7 +251,8 @@ public class repository {
             String sql = "SELECT Employee.Employee_Lname, Employee.Employee_Fname\n"
                     + "FROM Employee\n"
                     + "WHERE (((Employee.Employee_Id)='" + employeeID + "'));";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             if (rs.next()) {
                 employeeName = rs.getString("Employee_Fname") + rs.getString("Employee_Lname");
@@ -267,7 +274,8 @@ public class repository {
                     + "FROM ProjectAssignment INNER JOIN ProjectTimeLog ON ProjectAssignment.ProjectAssignment_Id = ProjectTimeLog.ProjectTimeLog_ProjectAssignmentId\n"
                     + "GROUP BY ProjectTimeLog.ProjectTimeLog_DateLogged, ProjectAssignment.ProjectAssignment_EmployeeID\n"
                     + "HAVING (((ProjectTimeLog.ProjectTimeLog_DateLogged)>=" + getSQLDateString(fromDate) + "  And (ProjectTimeLog.ProjectTimeLog_DateLogged)<=" + getSQLDateString(toDate) + "));";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
 
             //loop through the users arraylist and add up the time, add user Id and total to employee hours hashmap
             while (rs.next()) {
@@ -314,7 +322,8 @@ public class repository {
 
         try {
             String sql = "SELECT Project.* FROM Project";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
             if (rs.next()) {
                 rs.moveToInsertRow();
                 //Primary key not needed as it is an autonumber, it adds that field automatically
@@ -332,8 +341,9 @@ public class repository {
     
     public static void updateEmployee(Employee employee) {
         try {
-            String sql = "SELECT Employee.* FROM Employee where Employee_Id = '"+employee.getEmployee_Id()+"'";
-            ResultSet rs = executeSQL.executeQuery(getConnection(), sql);
+            String sql = "SELECT Employee.* FROM Employee where Employee_Id = '" + employee.getEmployee_Id() + "'";
+            Connection con = getConnection();
+            ResultSet rs = executeSQL.executeQuery(con, sql);
             if (rs.next()) {
                 //rs.moveToInsertRow();
                 //Primary key not needed as it is an autonumber, it adds that field automatically
